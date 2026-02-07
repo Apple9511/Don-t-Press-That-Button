@@ -1,6 +1,4 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
-
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCIcOQdlXD6mJ1SmcT9bWOC1jhajeCiKmU",
   authDomain: "don-t-press-that-button.firebaseapp.com",
@@ -214,7 +212,7 @@ function updateFirebaseTimestamp(timestamp, currentPresses) {
 }
 
 // Function to send Discord notification
-async function sendDiscordNotification(timerValue, totalPresses) {
+async function sendDiscordNotification(timerValue, totalPresses, username = 'Anonymous') {
     // Check if webhook is configured
     if (!discordWebhookURL || discordWebhookURL === "YOUR_DISCORD_WEBHOOK_URL_HERE") {
         console.warn("Discord webhook URL not configured");
@@ -231,40 +229,33 @@ async function sendDiscordNotification(timerValue, totalPresses) {
     lastDiscordNotification = now;
     
     try {
-        // Get some additional info (optional)
-        const additionalInfo = {
-            platform: navigator.platform,
-            language: navigator.language,
-            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
-        };
-        
         // Create Discord embed
         const embed = {
             title: "🚨 Button Pressed!",
-        description: `**${username}** couldn't resist the temptation!`,
-        color: 0xff416c,
-        fields: [
-            {
-                name: "👤 Pressed By",
-                value: username,
-                inline: true
-            },
-            {
-                name: "⏰ Timer Reset At",
-                value: `\`${timerValue}\``,
-                inline: true
-            },
-            {
-                name: "🔢 Total Presses",
-                value: `**${totalPresses}**`,
-                inline: true
-            },
-            {
-                name: "📅 Time of Press",
-                value: new Date().toLocaleString(),
-                inline: true
-            }
-        ],
+            description: `**${username}** couldn't resist the temptation!`,
+            color: 0xff416c,
+            fields: [
+                {
+                    name: "👤 Pressed By",
+                    value: username,
+                    inline: true
+                },
+                {
+                    name: "⏰ Timer Reset At",
+                    value: `\`${timerValue}\``,
+                    inline: true
+                },
+                {
+                    name: "🔢 Total Presses",
+                    value: `**${totalPresses}**`,
+                    inline: true
+                },
+                {
+                    name: "📅 Time of Press",
+                    value: new Date().toLocaleString(),
+                    inline: true
+                }
+            ],
             footer: {
                 text: "Don't Press That Button! • Website Activity"
             },
@@ -395,6 +386,9 @@ function updateUI() {
     } else {
         lastPressDisplay.textContent = "Never";
     }
+    
+    // Update unique pressers count
+    uniquePressersDisplay.textContent = uniquePressersCount;
 }
 
 // Format date/time for display
