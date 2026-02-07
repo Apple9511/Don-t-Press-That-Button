@@ -1,13 +1,19 @@
-// Firebase configuration
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "don-t-press-that-button.firebaseapp.com",
-    databaseURL: "https://don-t-press-that-button-default-rtdb.europe-west1.firebasedatabase.app/",
-    projectId: "don-t-press-that-button",
-    storageBucket: "don-t-press-that-button.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyCIcOQdlXD6mJ1SmcT9bWOC1jhajeCiKmU",
+  authDomain: "don-t-press-that-button.firebaseapp.com",
+  databaseURL: "https://don-t-press-that-button-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "don-t-press-that-button",
+  storageBucket: "don-t-press-that-button.firebasestorage.app",
+  messagingSenderId: "1046000874474",
+  appId: "1:1046000874474:web:ee6a57d4fa7beee161f893",
+  measurementId: "G-X2EMEBYD3W"
 };
+
+// Discord Webhook URL - Replace with your actual webhook URL
+let discordWebhookURL = "https://discord.com/api/webhooks/1469818781332275352/n-wpxZSQCUQ89hDWx8VjsbyYtG2yZw3pUKtYLjeX3pJsOf5cShp3fY9aNcsGVjdtU-Rl";
 
 // DOM elements
 const button = document.getElementById('the-button');
@@ -22,6 +28,8 @@ let lastPressTime = null;
 let totalPresses = 0;
 let isConnected = false;
 let database;
+let lastDiscordNotification = 0;
+const NOTIFICATION_COOLDOWN = 10000; // 10 seconds cooldown between Discord notifications
 
 // Initialize Firebase
 function initializeFirebase() {
@@ -146,6 +154,134 @@ function updateFirebaseTimestamp(timestamp, currentPresses) {
     });
 }
 
+// Function to send Discord notification
+async function sendDiscordNotification(timerValue, totalPresses) {
+    // Check if webhook is configured
+    if (!discordWebhookURL || discordWebhookURL === "YOUR_DISCORD_WEBHOOK_URL_HERE") {
+        console.warn("Discord webhook URL not configured");
+        return;
+    }
+    
+    // Rate limiting check
+    const now = Date.now();
+    if (now - lastDiscordNotification < NOTIFICATION_COOLDOWN) {
+        console.log("Rate limited - skipping Discord notification");
+        return;
+    }
+    
+    lastDiscordNotification = now;
+    
+    try {
+        // Get some additional info (optional)
+        const additionalInfo = {
+            platform: navigator.platform,
+            language: navigator.language,
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+        };
+        
+        // Create Discord embed
+        const embed = {
+            title: "🚨 Button Pressed!",
+            description: "Someone couldn't resist the temptation!",
+            color: 0xff416c,
+            fields: [
+                {
+                    name: "⏰ Timer Reset At",
+                    value: `\`${timerValue}\``,
+                    inline: true
+                },
+                {
+                    name: "🔢 Total Presses",
+                    value: `**${totalPresses}**`,
+                    inline: true
+                },
+                {
+                    name: "📅 Time of Press",
+                    value: new Date().toLocaleString(),
+                    inline: true
+                }
+            ],
+            footer: {
+                text: "Don't Press That Button! • Website Activity"
+            },
+            timestamp: new Date().toISOString(),
+            thumbnail: {
+                url: "https://cdn-icons-png.flaticon.com/512/7028/7028151.png"
+            }
+        };
+        
+        // Send to Discord webhook
+        const response = await fetch(discordWebhookURL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                embeds: [embed],
+                username: "Button Watcher",
+                avatar_url: "https://cdn-icons-png.flaticon.com/512/7028/7028151.png"
+            })
+        });
+        
+        if (!response.ok) {
+            console.error("Failed to send Discord notification:", response.status);
+        } else {
+            console.log("Discord notification sent successfully");
+        }
+    } catch (error) {
+        console.error("Error sending Discord notification:", error);
+    }
+}
+
+// Function to send milestone notifications (optional)
+async function sendMilestoneNotification(totalPresses) {
+    const milestones = [10, 25, 50, 100, 250, 500, 1000, 5000];
+    
+    if (milestones.includes(totalPresses)) {
+        try {
+            const embed = {
+                title: "🎉 Milestone Reached!",
+                description: `**${totalPresses}** total button presses!`,
+                color: 0x4dff88,
+                fields: [
+                    {
+                        name: "🎊 Achievement",
+                        value: `${totalPresses} Presses`,
+                        inline: true
+                    },
+                    {
+                        name: "👥 Community Effort",
+                        value: "Thanks to everyone who pressed!",
+                        inline: true
+                    }
+                ],
+                footer: {
+                    text: "Don't Press That Button! • Milestone Alert"
+                },
+                timestamp: new Date().toISOString(),
+                thumbnail: {
+                    url: "https://cdn-icons-png.flaticon.com/512/7028/7028151.png"
+                }
+            };
+            
+            await fetch(discordWebhookURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    content: `🎉 **Milestone Alert!** We've reached ${totalPresses} total button presses!`,
+                    embeds: [embed],
+                    username: "Button Watcher",
+                    avatar_url: "https://cdn-icons-png.flaticon.com/512/7028/7028151.png"
+                })
+            });
+        } catch (error) {
+            console.error("Error sending milestone notification:", error);
+        }
+    }
+}
+
 // Start the timer
 function startTimer() {
     // Clear any existing timer
@@ -249,6 +385,9 @@ async function handleButtonPress() {
     const originalText = button.innerHTML;
     button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> UPDATING...';
     
+    // Capture the timer value BEFORE resetting
+    const timerValueBeforeReset = timerDisplay.textContent;
+    
     try {
         // Get current timestamp
         const currentTime = new Date().toISOString();
@@ -283,6 +422,12 @@ async function handleButtonPress() {
         // Update UI immediately
         updateUI();
         updateTimer();
+        
+        // Send Discord notification
+        await sendDiscordNotification(timerValueBeforeReset, totalPresses);
+        
+        // Check for milestone
+        await sendMilestoneNotification(totalPresses);
         
     } catch (error) {
         console.error("Error updating timer:", error);
@@ -329,9 +474,21 @@ function startLocalFallback() {
     firebaseStatus.style.color = "#ff9900";
 }
 
+// Load Discord webhook from localStorage if saved
+function loadDiscordWebhook() {
+    const savedWebhook = localStorage.getItem('discordWebhook');
+    if (savedWebhook && savedWebhook.startsWith('https://discord.com/api/webhooks/')) {
+        discordWebhookURL = savedWebhook;
+        console.log("Loaded Discord webhook from localStorage");
+    }
+}
+
 // Initialize the app
 document.addEventListener('DOMContentLoaded', () => {
     console.log("Don't Press That Button initialized");
+    
+    // Load Discord webhook from storage
+    loadDiscordWebhook();
     
     // Initialize Firebase
     initializeFirebase();
