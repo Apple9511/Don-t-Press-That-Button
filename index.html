@@ -34,15 +34,49 @@
                 </div>
                 
                 <div class="stats">
-                    <div class="stat-box">
-                        <div class="stat-value" id="press-count">0</div>
-                        <div class="stat-label">Total Presses</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-value" id="last-press">Never</div>
-                        <div class="stat-label">Last Pressed</div>
-                    </div>
-                </div>
+    <div class="stat-box">
+        <div class="stat-value" id="press-count">0</div>
+        <div class="stat-label">Total Presses</div>
+    </div>
+    <div class="stat-box">
+        <div class="stat-value" id="last-press">Never</div>
+        <div class="stat-label">Last Pressed</div>
+    </div>
+    <div class="stat-box">
+        <div class="stat-value" id="unique-pressers">0</div>
+        <div class="stat-label">Unique Pressers</div>
+    </div>
+</div>
+
+<!-- Add username input -->
+<div class="username-container">
+    <div class="username-input">
+        <i class="fas fa-user"></i>
+        <input type="text" id="username-input" placeholder="Enter your name before pressing..." maxlength="20">
+        <button id="save-username"><i class="fas fa-save"></i> Save</button>
+    </div>
+    <p class="username-hint">Your name will be saved when you press the button</p>
+</div>
+
+<!-- Add pressers list section -->
+<div class="pressers-section">
+    <h2><i class="fas fa-users"></i> Recent Pressers</h2>
+    <div class="pressers-list-container">
+        <div class="pressers-list" id="pressers-list">
+            <div class="empty-list">No one has pressed the button yet. Be the first!</div>
+        </div>
+        <div class="pressers-stats">
+            <div class="presser-stat">
+                <i class="fas fa-crown"></i>
+                <span>Top Presser: <span id="top-presser">None</span></span>
+            </div>
+            <div class="presser-stat">
+                <i class="fas fa-fire"></i>
+                <span>Most Recent: <span id="most-recent-presser">None</span></span>
+            </div>
+        </div>
+    </div>
+</div>
             </div>
             
             <div class="instructions">
