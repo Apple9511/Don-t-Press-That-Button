@@ -13,7 +13,7 @@ const firebaseConfig = {
 };
 
 // Discord Webhook URL - Replace with your actual webhook URL
-let discordWebhookURL = "https://discord.com/api/webhooks/1469818781332275352/n-wpxZSQCUQ89hDWx8VjsbyYtG2yZw3pUKtYLjeX3pJsOf5cShp3fY9aNcsGVjdtU-Rl";
+let discordWebhookURL = "https://discord.com/api/webhooks/1469822972444278947/bwPDjZ6UQHZvKjUH0BW314vDIUV7MkGY_7clLTAXR8SFtWRmyM0jnD1zH54kP0QrHlj8";
 
 // DOM elements
 const button = document.getElementById('the-button');
