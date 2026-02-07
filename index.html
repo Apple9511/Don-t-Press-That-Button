@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Don't Press That Button!</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Don't Press That Button!</h1>
+            <p class="subtitle">The rules are simple: Don't press the button. Every time someone presses it, the timer resets.</p>
+        </header>
+        
+        <main>
+            <div class="game-area">
+                <div class="button-container">
+                    <button id="the-button" class="danger-button">
+                        <i class="fas fa-hand-pointer"></i> DON'T PRESS
+                    </button>
+                    <div class="button-shadow"></div>
+                </div>
+                
+                <div class="timer-container">
+                    <div class="timer-display">
+                        <span id="timer">00:00:00</span>
+                        <div class="timer-label">Time since last button press</div>
+                    </div>
+                </div>
+                
+                <div class="stats">
+                    <div class="stat-box">
+                        <div class="stat-value" id="press-count">0</div>
+                        <div class="stat-label">Total Presses</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="last-press">Never</div>
+                        <div class="stat-label">Last Pressed</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="instructions">
+                <h2><i class="fas fa-info-circle"></i> How It Works</h2>
+                <ul>
+                    <li>This timer tracks how long it's been since someone pressed the button.</li>
+                    <li>When you press the button, the timer resets to zero.</li>
+                    <li>Your action is saved to a database so everyone can see the timer.</li>
+                    <li>Try to resist the temptation to press it!</li>
+                </ul>
+            </div>
+            
+            <div class="warning">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Warning: Pressing the button will reset the timer for everyone!</span>
+            </div>
+        </main>
+        
+        <footer>
+            <p>Created with <i class="fas fa-heart"></i> and Firebase</p>
+            <p class="firebase-status">Firebase: <span id="firebase-status">Connecting...</span></p>
+        </footer>
+    </div>
+    
+    <script src="script.js" type = "module"></script>
+</body>
+</html>
