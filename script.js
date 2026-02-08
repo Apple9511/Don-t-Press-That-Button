@@ -1,6 +1,5 @@
 // Firebase configuration
 const firebaseConfig = {
-  //apiKey: "AIzaSyCIcOQdlXD6mJ1SmcT9bWOC1jhajeCiKmU",
   authDomain: "don-t-press-that-button.firebaseapp.com",
   databaseURL: "https://don-t-press-that-button-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "don-t-press-that-button",
