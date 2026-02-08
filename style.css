@@ -519,3 +519,194 @@ footer i {
 .stat-box:nth-child(3) .stat-value {
     color: #b366ff;
 }
+
+/* Dual button layout */
+.dual-button-container {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.button-pair {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 20px;
+}
+
+.button-divider {
+  color: #aaa;
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0 20px;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.mystery-button {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  font-size: 1.3rem;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.mystery-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 40px rgba(255, 255, 255, 0.2);
+}
+
+.mystery-button:active {
+  transform: scale(0.98);
+}
+
+/* Button A - Blue theme */
+#button-left {
+  background: linear-gradient(135deg, #4da6ff, #3366cc);
+  color: white;
+  box-shadow: 0 10px 30px rgba(77, 166, 255, 0.4);
+}
+
+#button-left:hover {
+  box-shadow: 0 15px 40px rgba(77, 166, 255, 0.6);
+}
+
+/* Button B - Purple theme */
+#button-right {
+  background: linear-gradient(135deg, #b366ff, #8c1aff);
+  color: white;
+  box-shadow: 0 10px 30px rgba(179, 102, 255, 0.4);
+}
+
+#button-right:hover {
+  box-shadow: 0 15px 40px rgba(179, 102, 255, 0.6);
+}
+
+.mystery-button i {
+  font-size: 3rem;
+  opacity: 0.8;
+}
+
+.button-label {
+  font-size: 1.8rem;
+  letter-spacing: 2px;
+}
+
+.button-subtitle {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  font-style: italic;
+}
+
+.mystery-message {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 15px;
+  margin: 20px auto;
+  max-width: 600px;
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+  color: #ffcc00;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.mystery-message i {
+  font-size: 1.5rem;
+}
+
+.mystery-stats {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin: 30px 0;
+}
+
+.mystery-stat {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 20px;
+  min-width: 150px;
+  border-top: 3px solid transparent;
+}
+
+.mystery-stat:nth-child(1) {
+  border-top-color: #4da6ff;
+}
+
+.mystery-stat:nth-child(2) {
+  border-top-color: #b366ff;
+}
+
+.mystery-stat:nth-child(3) {
+  border-top-color: #4dff88;
+}
+
+.mystery-value {
+  font-size: 2.5rem;
+  font-weight: bold;
+  font-family: monospace;
+  margin-bottom: 5px;
+}
+
+#left-presses {
+  color: #4da6ff;
+}
+
+#right-presses {
+  color: #b366ff;
+}
+
+#preference-ratio {
+  color: #4dff88;
+}
+
+.mystery-label {
+  font-size: 0.9rem;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Pulsing animation for mystery */
+@keyframes pulse-mystery {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+.mystery-button {
+  animation: pulse-mystery 3s infinite;
+}
+
+#button-left { animation-delay: 0s; }
+#button-right { animation-delay: 1.5s; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .button-pair {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .button-divider {
+    padding: 10px 0;
+  }
+  
+  .mystery-stats {
+    flex-direction: column;
+    align-items: center;
+  }
+}

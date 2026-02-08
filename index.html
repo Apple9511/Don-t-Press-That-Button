@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Don't Press That Button!</title>
+    <title>Don't Press That Button! - Dual Edition</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Firebase SDK -->
@@ -13,94 +13,144 @@
 <body>
     <div class="container">
         <header>
-            <h1>Don't Press That Button!</h1>
-            <p class="subtitle">The rules are simple: Don't press the button. Every time someone presses it, the timer resets.</p>
+            <h1><i class="fas fa-question-circle"></i> Don't Press That Button!</h1>
+            <p class="subtitle">Two buttons. One timer. Both reset it. Does your choice matter?</p>
         </header>
         
         <main>
             <div class="game-area">
-                <div class="button-container">
-                    <button id="the-button" class="danger-button">
-                        <i class="fas fa-hand-pointer"></i> DON'T PRESS
-                    </button>
-                    <div class="button-shadow"></div>
-                </div>
-                
-                <div class="timer-container">
-                    <div class="timer-display">
-                        <span id="timer">00:00:00</span>
-                        <div class="timer-label">Time since last button press</div>
+                <!-- Dual Button Container -->
+                <div class="dual-button-container">
+                    <div class="button-pair">
+                        <button id="button-left" class="mystery-button" data-side="left">
+                            <i class="fas fa-question-circle"></i>
+                            <span class="button-label">BUTTON A</span>
+                            <span class="button-subtitle">???</span>
+                        </button>
+                        
+                        <div class="button-divider">OR</div>
+                        
+                        <button id="button-right" class="mystery-button" data-side="right">
+                            <i class="fas fa-question-circle"></i>
+                            <span class="button-label">BUTTON B</span>
+                            <span class="button-subtitle">???</span>
+                        </button>
+                    </div>
+                    
+                    <div class="mystery-message" id="mystery-message">
+                        <i class="fas fa-brain"></i>
+                        Which one will you choose? Does it even matter?
                     </div>
                 </div>
                 
+                <!-- Mystery Stats -->
+                <div class="mystery-stats">
+                    <div class="mystery-stat">
+                        <div class="mystery-value" id="left-presses">0</div>
+                        <div class="mystery-label">Button A Presses</div>
+                    </div>
+                    <div class="mystery-stat">
+                        <div class="mystery-value" id="right-presses">0</div>
+                        <div class="mystery-label">Button B Presses</div>
+                    </div>
+                    <div class="mystery-stat">
+                        <div class="mystery-value" id="preference-ratio">50%</div>
+                        <div class="mystery-label">A/B Preference</div>
+                    </div>
+                </div>
+                
+                <!-- Main Timer -->
+                <div class="timer-container">
+                    <div class="timer-display">
+                        <span id="timer">00:00:00</span>
+                        <div class="timer-label">Time since last button press (either one!)</div>
+                    </div>
+                </div>
+                
+                <!-- Global Stats -->
                 <div class="stats">
-    <div class="stat-box">
-        <div class="stat-value" id="press-count">0</div>
-        <div class="stat-label">Total Presses</div>
-    </div>
-    <div class="stat-box">
-        <div class="stat-value" id="last-press">Never</div>
-        <div class="stat-label">Last Pressed</div>
-    </div>
-    <div class="stat-box">
-        <div class="stat-value" id="unique-pressers">0</div>
-        <div class="stat-label">Unique Pressers</div>
-    </div>
-</div>
-
-<!-- Add username input -->
-<div class="username-container">
-    <div class="username-input">
-        <i class="fas fa-user"></i>
-        <input type="text" id="username-input" placeholder="Enter your name before pressing..." maxlength="20">
-        <button id="save-username"><i class="fas fa-save"></i> Save</button>
-    </div>
-    <p class="username-hint">Your name will be saved when you press the button</p>
-</div>
-
-<!-- Add pressers list section -->
-<div class="pressers-section">
-    <h2><i class="fas fa-users"></i> Recent Pressers</h2>
-    <div class="pressers-list-container">
-        <div class="pressers-list" id="pressers-list">
-            <div class="empty-list">No one has pressed the button yet. Be the first!</div>
-        </div>
-        <div class="pressers-stats">
-            <div class="presser-stat">
-                <i class="fas fa-crown"></i>
-                <span>Top Presser: <span id="top-presser">None</span></span>
-            </div>
-            <div class="presser-stat">
-                <i class="fas fa-fire"></i>
-                <span>Most Recent: <span id="most-recent-presser">None</span></span>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="press-count">0</div>
+                        <div class="stat-label">Total Presses</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="last-press">Never</div>
+                        <div class="stat-label">Last Pressed</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="unique-pressers">0</div>
+                        <div class="stat-label">Unique Pressers</div>
+                    </div>
+                </div>
+                
+                <!-- Username Input -->
+                <div class="username-container">
+                    <div class="username-input">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="username-input" placeholder="Enter your name before pressing..." maxlength="20">
+                        <button id="save-username"><i class="fas fa-save"></i> Save</button>
+                    </div>
+                    <p class="username-hint">Your name will be saved when you press either button</p>
+                </div>
+                
+                <!-- Pressers List -->
+                <div class="pressers-section">
+                    <h2><i class="fas fa-users"></i> Recent Pressers</h2>
+                    <div class="pressers-list-container">
+                        <div class="pressers-list" id="pressers-list">
+                            <div class="empty-list">No one has pressed the button yet. Be the first!</div>
+                        </div>
+                        <div class="pressers-stats">
+                            <div class="presser-stat">
+                                <i class="fas fa-crown"></i>
+                                <span>Top Presser: <span id="top-presser">None</span></span>
+                            </div>
+                            <div class="presser-stat">
+                                <i class="fas fa-fire"></i>
+                                <span>Most Recent: <span id="most-recent-presser">None</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             
+            <!-- Instructions -->
             <div class="instructions">
                 <h2><i class="fas fa-info-circle"></i> How It Works</h2>
                 <ul>
-                    <li>This timer tracks how long it's been since someone pressed the button.</li>
-                    <li>When you press the button, the timer resets to zero.</li>
-                    <li>Your action is saved to a database so everyone can see the timer.</li>
-                    <li>Try to resist the temptation to press it!</li>
+                    <li><strong>There are two buttons:</strong> Button A (blue) and Button B (purple)</li>
+                    <li><strong>Both buttons do the same thing:</strong> They reset the timer to zero</li>
+                    <li><strong>Your choice is tracked:</strong> We record which button you press</li>
+                    <li><strong>The mystery:</strong> Does your choice matter? Is there a difference?</li>
+                    <li><strong>Global sync:</strong> Everyone sees the same timer and stats</li>
+                    <li><strong>Try to resist</strong> pressing either button... or don't!</li>
                 </ul>
             </div>
             
+            <!-- Controls Info -->
+            <div class="instructions">
+                <h2><i class="fas fa-keyboard"></i> Keyboard Controls</h2>
+                <ul>
+                    <li><strong>A key or Left Arrow:</strong> Press Button A</li>
+                    <li><strong>B key or Right Arrow:</strong> Press Button B</li>
+                    <li><strong>Space or Enter:</strong> Randomly press A or B</li>
+                </ul>
+            </div>
+            
+            <!-- Warning -->
             <div class="warning">
                 <i class="fas fa-exclamation-triangle"></i>
-                <span>Warning: Pressing the button will reset the timer for everyone!</span>
+                <span>Warning: Pressing EITHER button will reset the timer for everyone!</span>
             </div>
         </main>
         
         <footer>
             <p>Created with <i class="fas fa-heart"></i> and Firebase</p>
             <p class="firebase-status">Firebase: <span id="firebase-status">Connecting...</span></p>
+            <p class="secret-hint">Hint: Press A key for Button A, B key for Button B</p>
         </footer>
     </div>
     
-    <script src="script.js" type = "module"></script>
+    <script src="script.js"></script>
 </body>
 </html>
